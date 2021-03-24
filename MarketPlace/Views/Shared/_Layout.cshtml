@@ -1,0 +1,103 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - ASP.NET</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="#">@Html.ActionLink("MP", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })</a>
+        <div class="lang-menu">
+            <h4 class="lang-switcher" id="switcher">@MarketPlace.Resources.Views.General.Layout.Language</h4>
+            <div class="lang-dropdown lang-hidden" id="d-down">
+                @Html.ActionLink("EN", "ChangeLanguage", "Localization", new { lang = "en" }, new { @class = "lang" })
+                @Html.ActionLink("RU", "ChangeLanguage", "Localization", new { lang = "ru" }, new { @class = "lang" })
+            </div>
+        </div>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">@Html.ActionLink(MarketPlace.Resources.Views.General.Layout.Home, "Index", "Home", null, new { @class = "nav-link" })</li>
+                @if(User.Identity.IsAuthenticated) {
+                    <li class="nav-item">@Html.ActionLink(MarketPlace.Resources.Views.General.Layout.Offers, "Index", "Search", null, new { @class = "nav-link" })</li>
+                    <li class="nav-item">@Html.ActionLink(MarketPlace.Resources.Views.General.Layout.New_offer, "CreateOffer", "Offers", null, new { @class = "nav-link" })</li>
+                    <li class="nav-item">@Html.ActionLink(MarketPlace.Resources.Views.General.Layout.My_account, "Index", "Users", null, new { @class = "nav-link" })</li>
+                    <li class="nav-item">@Html.ActionLink(MarketPlace.Resources.Views.General.Layout.Logout, "Logout", "Users", null, new { @class = "nav-link" })</li>
+                } else {
+                    <li class="nav-item">@Html.ActionLink(MarketPlace.Resources.Views.General.Layout.Login, "Login", "Users", null, new { @class = "nav-link" })</li>
+                    <li class="nav-item">@Html.ActionLink(MarketPlace.Resources.Views.General.Layout.Register, "Register", "Users", null, new { @class = "nav-link" })</li>
+                }
+            </ul>
+        </div>
+    </nav>
+
+
+    <div class="page-body container">
+        @RenderBody()
+    </div>
+
+
+    <footer>
+        <!-- Footer Section -->
+        <div class="footer__container">
+            <section class="social__media">
+                <div class="social__media--wrap">
+                    <div class="footer__logo">
+                        <a href="" id="footer__logo">MP</a>
+                    </div>
+                    <p class="website__rights" style="margin-bottom:0px">&copy; @DateTime.Now.Year - Marketplace ASP.NET</p>
+
+                    <div class="social__icons">
+                        <a href="/" class="social__icon--link" target="_blank">
+                            <i class="fab fa-facebook"></i>
+                        </a>
+                        <a href="/" class="social__icon--link">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="/" class="social__icon--link">
+                            <i class="fab fa-youtube"></i>
+                        </a>
+                        <a href="/" class="social__icon--link">
+                            <i class="fab fa-linkedin"></i>
+                        </a>
+                        <a href="/" class="social__icon--link">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+    </footer>
+
+
+    @Scripts.Render("~/bundles/jquery")
+    @RenderSection("scripts", required: false)
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js" integrity="sha384-LtrjvnR4Twt/qOuYxE721u19sVFLVSA4hf/rRt6PrZTmiPltdZcI7q7PXQBYTKyf" crossorigin="anonymous"></script>
+    <script>
+        let switcher = document.getElementById("switcher");
+        let dropDown = document.getElementById("d-down");
+
+        switcher.addEventListener("click", (e) => {
+
+            if (dropDown.classList.contains("lang-hidden")) {
+                dropDown.classList.remove("lang-hidden");
+                dropDown.classList.add("lang-visible");
+
+            } else {
+                dropDown.classList.add("lang-hidden");
+                dropDown.classList.remove("lang-visible");
+            }
+        });
+
+    </script>
+</body>
+</html>

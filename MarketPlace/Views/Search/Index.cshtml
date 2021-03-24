@@ -1,0 +1,77 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+
+@using(Ajax.BeginForm("SearchOffers", null, new AjaxOptions { UpdateTargetId = "searchResults" }, new { @class = "container search-options" })) {
+    <h2>@MarketPlace.Resources.Views.Search.Search.Search_options</h2>
+    <div class="search-inputs">
+        <div class="form-group">
+            <label>@MarketPlace.Resources.Views.Search.Search.Title:</label>
+            <input class="form-control" type="text" name="title" />
+        </div>
+
+        <div class="form-group">
+            <label>@MarketPlace.Resources.Views.Search.Search.Date_from:</label>
+            <input class="form-control" type="date" name="dateFrom" placeholder="title" />
+        </div>
+
+        <div class="form-group">
+            <label>@MarketPlace.Resources.Views.Search.Search.Date_To:</label>
+            <input class="form-control" type="date" name="dateTo" placeholder="title" />
+        </div>
+
+        <div class="form-group">
+            <label>@MarketPlace.Resources.Views.Search.Search.Category:</label>
+            @{
+                Html.RenderAction("GetCategories", "Offers");
+            }
+        </div>
+
+        <div class="form-group">
+            <p>
+                <label for="amount">@MarketPlace.Resources.Views.Search.Search.Price_Range:</label>
+                <input type="text" id="amount" readonly style="border:0; color:white; font-weight:bold; background-color:transparent">
+                <input type="hidden" name="priceFrom" id="priceFromInput" />
+                <input type="hidden" name="priceTo" id="priceToInput" />
+            </p>
+
+            <div id="slider-range"></div>
+        </div>
+
+        <input type="submit" class="btn  btn-success" value="@MarketPlace.Resources.Views.Search.Search.Search_Btn" />
+    </div>
+
+}
+
+
+
+<div class="target" id="searchResults">
+
+</div>
+
+
+
+@section scripts {
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
+            integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
+            crossorigin="anonymous"></script>
+
+    <script>
+        $(function () {
+            $("#slider-range").slider({
+                range: true,
+                min: 0,
+                max: 99999,
+                values: [0, 99999],
+                slide: function (event, ui) {
+                    $("#amount").val("$" + ui.values[0] + " - $" + ui.values[1]);
+                    $("#priceFromInput").val(ui.values[0]);
+                    $("#priceToInput").val(ui.values[1]);
+                }
+            });
+            $("#amount").val("$" + $("#slider-range").slider("values", 0) +
+                " - $" + $("#slider-range").slider("values", 1));
+        });
+    </script>
+
+}

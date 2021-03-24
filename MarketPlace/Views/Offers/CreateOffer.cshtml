@@ -1,0 +1,83 @@
+﻿@model MarketPlace.Models.Offer.OfferCreateModel
+
+
+@{
+    ViewBag.Title = "CreateOffer";
+}
+
+@using(Html.BeginForm("CreateOffer", "Offers", FormMethod.Post, new { @class = "form", enctype = "multipart/form-data" })) {
+    <div class="form">
+
+        <div class="form-group">
+            @Html.LabelFor(n => n.Title)
+            @Html.TextBoxFor(n => n.Title, new { @class = "form-control" })
+            @Html.ValidationMessageFor(n => n.Title, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(n => n.Description)
+            @Html.TextAreaFor(n => n.Description, new { @class = "form-control" })
+            @Html.ValidationMessageFor(n => n.Description, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(n => n.Price)
+            @Html.TextBoxFor(n => n.Price, new { @class = "form-control", min = 0, max = 99999999, type = "number" })
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(n => n.fk_CategoryID)
+            @Html.DropDownListFor(n => n.fk_CategoryID, new SelectList(Model.Categories, "CategoryID", "CategoryName"), new { @class = "form-control" })
+        </div>
+
+        <div class="images form-group" id="preloader">
+
+        </div>
+
+        <div class="form-group">
+            <input type="file" name="offer-images" accept=".png,.jpg,.jpeg" multiple class="form-control-file" id="files-input" />
+        </div>
+
+        <input type="submit" value="@MarketPlace.Resources.Models.Offers.OfferCreateModel.Pusblish" class="btn btn-success" />
+    </div>
+}
+
+<style>
+    .pre-img {
+        width: 150px;
+        height: 150px;
+        border-radius: 5px;
+        margin: 10px;
+        box-shadow: 1px 1px 34px -9px rgba(0,0,0,0.75);
+        -webkit-box-shadow: 1px 1px 34px -9px rgba(0,0,0,0.75);
+        -moz-box-shadow: 1px 1px 34px -9px rgba(0,0,0,0.75);
+    }
+
+    #preloader {
+        padding: 20px;
+        display: flex;
+        flex-direction: row;
+    }
+</style>
+
+<script>
+
+    let fInput = document.getElementById("files-input");
+    let imgContainer = document.getElementById("preloader");
+    fInput.addEventListener("change", () => {
+        imgContainer.innerHTML = "";
+        Array.from(fInput.files).forEach((val, idx) => {
+            let reader = new FileReader();
+
+            reader.addEventListener("load", (e) => {
+                let img = document.createElement("img");
+                img.src = e.target.result;
+                img.classList.add("pre-img");
+                console.log(img.src);
+                imgContainer.appendChild(img);
+            })
+            reader.readAsDataURL(val)
+        })
+
+    })
+</script>

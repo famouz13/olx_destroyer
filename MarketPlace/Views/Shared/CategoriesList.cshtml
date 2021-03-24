@@ -1,0 +1,8 @@
+﻿@model List<MarketPlace.Models.DB.Categories>
+
+@{
+    Model.Add(new MarketPlace.Models.DB.Categories() { CategoryID = 0, CategoryName = "All" });
+}
+
+@Html.DropDownList("categoryID", new SelectList(Model, "CategoryID", "CategoryName"), new { @class = "form-control" })
+

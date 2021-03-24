@@ -1,0 +1,188 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="MarketplaceDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Categories">
+    <Key>
+      <PropertyRef Name="CategoryID" />
+    </Key>
+    <Property Name="CategoryID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="CategoryName" Type="nvarchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <EntityType Name="FavoriteOffersUsers">
+    <Key>
+      <PropertyRef Name="FavoriteOfferID" />
+    </Key>
+    <Property Name="FavoriteOfferID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="fk_OfferID" Type="int" Nullable="false" />
+    <Property Name="fk_UserID" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Offers">
+    <Key>
+      <PropertyRef Name="OfferID" />
+    </Key>
+    <Property Name="OfferID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Title" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Description" Type="nvarchar" MaxLength="150" Nullable="false" />
+    <Property Name="Price" Type="decimal" Precision="18" Scale="0" Nullable="false" />
+    <Property Name="Date" Type="datetime" />
+    <Property Name="fk_UserID" Type="int" Nullable="false" />
+    <Property Name="fk_CategoryID" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="OffersImages">
+    <Key>
+      <PropertyRef Name="OfferImageID" />
+    </Key>
+    <Property Name="OfferImageID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="fk_OfferID" Type="int" Nullable="false" />
+    <Property Name="ImageName" Type="nvarchar" MaxLength="100" />
+    <Property Name="ImagePath" Type="nvarchar(max)" />
+  </EntityType>
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="principal_id" Type="int" Nullable="false" />
+    <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="version" Type="int" />
+    <Property Name="definition" Type="varbinary(max)" />
+  </EntityType>
+  <EntityType Name="Users">
+    <Key>
+      <PropertyRef Name="UserID" />
+    </Key>
+    <Property Name="UserID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Login" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Phone" Type="nvarchar" MaxLength="15" Nullable="false" />
+    <Property Name="Password" Type="nvarchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'MarketplaceDB.dbo.V_OffersInfo' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="V_OffersInfo">
+    <Key>
+      <PropertyRef Name="OfferID" />
+      <PropertyRef Name="Title" />
+      <PropertyRef Name="Description" />
+      <PropertyRef Name="fk_UserID" />
+      <PropertyRef Name="fk_CategoryID" />
+      <PropertyRef Name="Price" />
+      <PropertyRef Name="CategoryName" />
+      <PropertyRef Name="Login" />
+      <PropertyRef Name="UserID" />
+      <PropertyRef Name="Phone" />
+    </Key>
+    <Property Name="OfferID" Type="int" Nullable="false" />
+    <Property Name="Title" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Description" Type="nvarchar" MaxLength="150" Nullable="false" />
+    <Property Name="fk_UserID" Type="int" Nullable="false" />
+    <Property Name="fk_CategoryID" Type="int" Nullable="false" />
+    <Property Name="Date" Type="datetime" />
+    <Property Name="Price" Type="decimal" Precision="18" Scale="0" Nullable="false" />
+    <Property Name="CategoryName" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Login" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="UserID" Type="int" Nullable="false" />
+    <Property Name="Phone" Type="nvarchar" MaxLength="15" Nullable="false" />
+  </EntityType>
+  <Association Name="FK__FavoriteO__fk_Of__4AB81AF0">
+    <End Role="Offers" Type="Self.Offers" Multiplicity="1" />
+    <End Role="FavoriteOffersUsers" Type="Self.FavoriteOffersUsers" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Offers">
+        <PropertyRef Name="OfferID" />
+      </Principal>
+      <Dependent Role="FavoriteOffersUsers">
+        <PropertyRef Name="fk_OfferID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__FavoriteO__fk_Us__4BAC3F29">
+    <End Role="Users" Type="Self.Users" Multiplicity="1" />
+    <End Role="FavoriteOffersUsers" Type="Self.FavoriteOffersUsers" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="UserID" />
+      </Principal>
+      <Dependent Role="FavoriteOffersUsers">
+        <PropertyRef Name="fk_UserID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Offers__fk_Categ__2D27B809">
+    <End Role="Categories" Type="Self.Categories" Multiplicity="1" />
+    <End Role="Offers" Type="Self.Offers" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Categories">
+        <PropertyRef Name="CategoryID" />
+      </Principal>
+      <Dependent Role="Offers">
+        <PropertyRef Name="fk_CategoryID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Offers__fk_UserI__2C3393D0">
+    <End Role="Users" Type="Self.Users" Multiplicity="1" />
+    <End Role="Offers" Type="Self.Offers" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="UserID" />
+      </Principal>
+      <Dependent Role="Offers">
+        <PropertyRef Name="fk_UserID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__OffersIma__fk_Of__3A81B327">
+    <End Role="Offers" Type="Self.Offers" Multiplicity="1" />
+    <End Role="OffersImages" Type="Self.OffersImages" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Offers">
+        <PropertyRef Name="OfferID" />
+      </Principal>
+      <Dependent Role="OffersImages">
+        <PropertyRef Name="fk_OfferID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="MarketplaceDBModelStoreContainer">
+    <EntitySet Name="Categories" EntityType="Self.Categories" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="FavoriteOffersUsers" EntityType="Self.FavoriteOffersUsers" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Offers" EntityType="Self.Offers" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="OffersImages" EntityType="Self.OffersImages" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="V_OffersInfo" EntityType="Self.V_OffersInfo" store:Type="Views" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [V_OffersInfo].[OfferID] AS [OfferID], 
+    [V_OffersInfo].[Title] AS [Title], 
+    [V_OffersInfo].[Description] AS [Description], 
+    [V_OffersInfo].[fk_UserID] AS [fk_UserID], 
+    [V_OffersInfo].[fk_CategoryID] AS [fk_CategoryID], 
+    [V_OffersInfo].[Date] AS [Date], 
+    [V_OffersInfo].[Price] AS [Price], 
+    [V_OffersInfo].[CategoryName] AS [CategoryName], 
+    [V_OffersInfo].[Login] AS [Login], 
+    [V_OffersInfo].[UserID] AS [UserID], 
+    [V_OffersInfo].[Phone] AS [Phone]
+    FROM [dbo].[V_OffersInfo] AS [V_OffersInfo]</DefiningQuery>
+    </EntitySet>
+    <AssociationSet Name="FK__FavoriteO__fk_Of__4AB81AF0" Association="Self.FK__FavoriteO__fk_Of__4AB81AF0">
+      <End Role="Offers" EntitySet="Offers" />
+      <End Role="FavoriteOffersUsers" EntitySet="FavoriteOffersUsers" />
+    </AssociationSet>
+    <AssociationSet Name="FK__FavoriteO__fk_Us__4BAC3F29" Association="Self.FK__FavoriteO__fk_Us__4BAC3F29">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="FavoriteOffersUsers" EntitySet="FavoriteOffersUsers" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Offers__fk_Categ__2D27B809" Association="Self.FK__Offers__fk_Categ__2D27B809">
+      <End Role="Categories" EntitySet="Categories" />
+      <End Role="Offers" EntitySet="Offers" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Offers__fk_UserI__2C3393D0" Association="Self.FK__Offers__fk_UserI__2C3393D0">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="Offers" EntitySet="Offers" />
+    </AssociationSet>
+    <AssociationSet Name="FK__OffersIma__fk_Of__3A81B327" Association="Self.FK__OffersIma__fk_Of__3A81B327">
+      <End Role="Offers" EntitySet="Offers" />
+      <End Role="OffersImages" EntitySet="OffersImages" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

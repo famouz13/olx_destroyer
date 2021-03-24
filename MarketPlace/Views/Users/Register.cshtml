@@ -1,0 +1,32 @@
+﻿@model MarketPlace.Models.User.UserRegisterModel
+
+@{
+    ViewBag.Title = "Register";
+}
+
+<h2>@MarketPlace.Resources.Models.Users.UserRegisterModel.RegisterTitle</h2>
+
+
+@using(Html.BeginForm("Register", "Users", FormMethod.Post, new { @class = "py-5" })) {
+    <div class="form-group">
+        @Html.LabelFor(n => n.Login):
+        @Html.TextBoxFor(n => n.Login, new { @class = "form-control", required = true })
+        @Html.ValidationMessageFor(n => n.Login, "", new { @class = "text-danger" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(n => n.Phone):
+        @Html.TextBoxFor(n => n.Phone, new { @class = "form-control", required = true })
+        @Html.ValidationMessageFor(n => n.Phone, "", new { @class = "text-danger" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(n => n.Password):
+        @Html.PasswordFor(n => n.Password, new { @class = "form-control", required = true })
+        @Html.ValidationMessageFor(n => n.Password, "", new { @class = "text-danger" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(n => n.RepeatPassword):
+        @Html.PasswordFor(n => n.RepeatPassword, new { @class = "form-control", required = true })
+        @Html.ValidationMessageFor(n => n.RepeatPassword, "", new { @class = "text-danger" })
+    </div>
+    <input type="submit" class="btn btn-primary" value="@MarketPlace.Resources.Models.Users.UserRegisterModel.Register" />
+}

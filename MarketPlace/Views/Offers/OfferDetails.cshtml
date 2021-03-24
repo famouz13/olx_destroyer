@@ -1,0 +1,53 @@
+﻿@model MarketPlace.Models.Offer.OfferDisplayModel
+
+<div class="details-container">
+    <div id="offerImages" class="carousel slide" data-ride="carousel">
+        <div class="carousel-inner">
+            @if(Model.ImagesPath.FirstOrDefault() != null) {
+                <div class="carousel-item active">
+                    <div class="inner-item">
+                        <img class="offer-image" src="~/@Model.ImagesPath[0]" alt="First slide" />
+                    </div>
+                </div>
+
+                foreach(var img in Model.ImagesPath.Skip(1)) {
+                    string path = Url.Content(img);
+
+                    <div class="carousel-item">
+                        <div class="inner-item">
+                            <img class="offer-image" src="~/@path" alt="First slide">
+                        </div>
+                    </div>
+                }
+
+            } else {
+                <div class="carousel-item active">
+                    <div class="inner-item">
+                        <img class="offer-image" src="~/OffersImages/no-image.png" alt="First slide" />
+                    </div>
+                </div>
+            }
+
+        </div>
+        <a class="carousel-control-prev" href="#offerImages" role="button" data-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+        </a>
+        <a class="carousel-control-next" href="#offerImages" role="button" data-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+        </a>
+    </div>
+
+    <div class="details py-5 px-3">
+        <h6 class="details-date details-text">Published at: @Model.OffersInfo.Date</h6>
+        <h4 class="details-date details-text">@Model.OffersInfo.Title</h4>
+        <h4 class="details-date details-text">Price: @Model.OffersInfo.Price $</h4>
+        <p class="details-desc details-text">
+            Description: <br>
+            @Model.OffersInfo.Description
+        </p>
+        <h4 class="details-text">Published by: @Model.OffersInfo.Login</h4>
+        <a href="tel:@Model.OffersInfo.Phone" class="details-text">Call: @Model.OffersInfo.Phone</a>
+    </div>
+</div>

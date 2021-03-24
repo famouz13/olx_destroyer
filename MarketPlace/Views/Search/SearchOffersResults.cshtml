@@ -1,0 +1,76 @@
+﻿@model IEnumerable<MarketPlace.Models.Offer.OfferDisplayModel>
+
+@foreach(var offer in Model) {
+
+    <div class="offer">
+        <div class="offer-preview-left">
+            @{
+                string imagePath = offer?.ImagesPath.FirstOrDefault() ?? "OffersImages/no-image.png";
+            }
+            <img class="preview-img" src="~/@imagePath" />
+            <div class="preview-info">
+                <h4>@offer.OffersInfo.Title</h4>
+                <h5>@offer.OffersInfo.Date</h5>
+            </div>
+        </div>
+        <div class="offer-preview-right">
+            <div class="inFav" offerid="@offer.OffersInfo.OfferID">
+                @if(offer.FavoriteOffers != null) {
+                    <i class="fas fa-star yellow"></i>
+                } else {
+                    <i class="fas fa-star"></i>
+                }
+            </div>
+            <h3>@offer.OffersInfo.Price $</h3>
+            @Html.ActionLink(MarketPlace.Resources.Views.Search.Search.Details, "Details", "Offers", new { id = offer.OffersInfo.OfferID }, new { @class = "btn btn-link" })
+        </div>
+    </div>
+
+
+}
+
+<style>
+    .inFav .fas {
+        color: white;
+        font-size: 20px;
+    }
+
+        .inFav .fas:hover {
+            cursor: pointer;
+            color: yellow;
+        }
+
+    .yellow {
+        color: yellow !important;
+    }
+</style>
+
+<script>
+    let stars = document.querySelectorAll(".inFav");
+    stars.forEach(n => {
+        n.addEventListener("click", (e) => {
+            let offerId = n.getAttribute("offerid");
+
+
+            $.ajax({
+                url: `/Offers/AddInFavorites`,
+                type: 'POST',
+                data: {
+                    id: offerId
+                },
+                success: function (data) {
+                    let { FavoriteOfferID } = data;
+                    if (FavoriteOfferID != -1) {
+                        n.firstElementChild.classList.add("yellow");
+                    } else {
+                        n.firstElementChild.classList.remove("yellow");
+                    }
+                },
+                error: function (XMLHttpRequest, ajaxOptions, ex) {
+                    console.log('error');
+                }
+            });
+
+        });
+    });
+</script>

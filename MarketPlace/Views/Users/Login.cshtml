@@ -1,0 +1,22 @@
+﻿@model MarketPlace.Models.User.UserLoginModel
+
+@{
+    ViewBag.Title = "Login";
+}
+
+<h2>@MarketPlace.Resources.Models.Users.UserRegisterModel.Login</h2>
+
+@using(Html.BeginForm("Login", "Users", FormMethod.Post, new { @class = "py-5" })) {
+    <div>
+        <div class="form-group">
+            @Html.LabelFor(n => n.Login)
+            @Html.TextBoxFor(n => n.Login, new { @class = "form-control", required = true })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(n => n.Password)
+            @Html.PasswordFor(n => n.Password, new { @class = "form-control", required = true })
+        </div>
+        <label class="text-danger">@ViewBag.Error</label>
+    </div>
+    <input type="submit" value="@MarketPlace.Resources.Models.Users.UserRegisterModel.LoginBtn" class="btn btn-success" />
+}
